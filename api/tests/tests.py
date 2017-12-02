@@ -1,5 +1,6 @@
 import json
 import unittest
+from unittest.mock import patch
 
 from api.app import app
 
@@ -18,14 +19,20 @@ class TestVerifyEmailExist(unittest.TestCase):
         self.assertEqual(200, result.status_code)
         self.assertEqual(expected, json.loads(result.data.decode('utf-8')))
 
-    def test_email_dont_exist(self):
-        result = self.app.post(self.url, data={'email': 'email@doesnot.exist'})
+    @patch('api.app.validate_email', side_effect=[True, False])
+    def test_email_dont_exist(self, validate_email_mock):
+        data = json.dumps({'email': 'email@doesnot.exist'})
+        result = self.app.post(self.url, data=data,
+                               content_type='application/json')
         expected = {'exist': False, 'message': "This e-mail doesn't exist"}
         self.assertEqual(200, result.status_code)
         self.assertEqual(expected, json.loads(result.data.decode('utf-8')))
 
-    def test_email_exist(self):
-        result = self.app.post(self.url, data={'email': 'email@exist.exist'})
+    @patch('api.app.validate_email', side_effect=[True, True])
+    def test_email_exist(self, validate_email_mock):
+        data = json.dumps({'email': 'email@exist.exist'})
+        result = self.app.post(self.url, data=data,
+                               content_type='application/json')
         expected = {'exist': True, 'message': "This e-mail exist"}
         self.assertEqual(200, result.status_code)
         self.assertEqual(expected, json.loads(result.data.decode('utf-8')))

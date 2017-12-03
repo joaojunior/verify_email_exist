@@ -33,7 +33,3 @@ def check_email():
             result = {'exist': False,
                       'message': EMAIL_DONT_EXIST}
     return jsonify(result)
-
-
-if __name__ == "__main__":
-    app.run()

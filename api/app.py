@@ -14,6 +14,7 @@ EMAIL_INVALID = 'This e-mail is invalid'
 
 @app.route('/', methods=['GET'])
 def metrics():
+    return jsonify({'a': 'b'})
     return render_template('index.html')
 
 

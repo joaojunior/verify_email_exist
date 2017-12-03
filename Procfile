@@ -1,1 +1,1 @@
-web: pipenv install && cd api/ && gunicorn --log-file - app:app
+web: pipenv install && cd api/ && gunicorn --bind 0.0.0.0:$PORT --log-file - app:app

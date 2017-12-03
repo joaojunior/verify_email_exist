@@ -16,6 +16,7 @@ validate-email = "*"
 flask = "*"
 tox = "*"
 nose = "*"
+gunicorn = "*"
 
 
 [requires]
